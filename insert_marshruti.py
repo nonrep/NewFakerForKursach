@@ -42,7 +42,7 @@ try:
     print(f"Подлкючилось: {after_connection - start_time} секунд")
 
     with connection.cursor() as cursor:
-        data = generate(2_000_000)
+        data = generate(1_000)
         after_create = time.time()
         print(f"Доп массив создан: {after_create - after_connection} секунд")
         cursor.executemany("""INSERT INTO МАРШРУТЫ(ПУНКТ_НАЗНАЧ, ПУНКТ_ОТПРАВ, ВРЕМЯ, РАССТОЯНИЕ, ОПЛАТА, ОПИСАНИЕ)

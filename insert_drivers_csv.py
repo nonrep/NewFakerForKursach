@@ -66,28 +66,28 @@ try:
     after_connection = time.time()
     print(f"Подлкючилось: {after_connection - start_time} секунд")
 
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT ТАБ_НОМЕР FROM ВОДИТЕЛИ ORDER BY ТАБ_НОМЕР DESC LIMIT 1")
-    #     tab_nomer = cursor.fetchall()
-    #     if len(tab_nomer) == 0:
-    #         tab_nomer = 10**7
-    #     else:
-    #         tab_nomer = tab_nomer[0][0]
-    #     print(tab_nomer)
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT ТАБ_НОМЕР FROM ВОДИТЕЛИ ORDER BY ТАБ_НОМЕР DESC LIMIT 1")
+        tab_nomer = cursor.fetchall()
+        if len(tab_nomer) == 0:
+            tab_nomer = 10**7
+        else:
+            tab_nomer = tab_nomer[0][0]
+        print(tab_nomer)
     after_create = time.time()
     print(f"Доп массив создан: {after_create - after_connection} секунд")
 
-    # with connection.cursor() as cursor:
-    #     data = generate(2_000_000, tab_nomer)
-    after_generate = time.time()
-    #     print(f"Данные сгенерированы: {after_generate - after_create} секунд")
-    #     cursor.executemany("INSERT INTO ВОДИТЕЛИ(ТАБ_НОМЕР, ФАМИЛИЯ, ИМЯ, ОТЧЕСТВО, КАТЕГОРИЯ, СТАЖ) VALUES(%s, %s, %s, %s, %s, %s)", data)
+    with connection.cursor() as cursor:
+        data = generate(5_000, tab_nomer)
+        after_generate = time.time()
+        print(f"Данные сгенерированы: {after_generate - after_create} секунд")
+        cursor.executemany("INSERT INTO ВОДИТЕЛИ(ТАБ_НОМЕР, ФАМИЛИЯ, ИМЯ, ОТЧЕСТВО, КАТЕГОРИЯ, СТАЖ) VALUES(%s, %s, %s, %s, %s, %s)", data)
     after_append=time.time()
     print(f"Данные добавлены: {after_append - after_generate}")
 
 
     with connection.cursor() as cursor:
-        data = mas_of_cat(2_000_000)
+        data = mas_of_cat(5_000)
         after_generate = time.time()
         print(f"Данные сгенерированы: {after_generate - after_create} секунд")
         for i, cat in enumerate(data):
