@@ -2,20 +2,13 @@ import psycopg2
 import random
 from faker import Faker
 from config import host, user, password, db_name
+from mimesis import Transport
+import string
 
-
-def generate(n):
-    fake = Faker('ru-RU')
-    letters = ["А", "В", "Е", "К", "М", "Н", "О", "Р", "С", "Т", "У", "Х"]
-    # data = [["СЕРИЯ", "НОМЕР", "РЕГИОН"]]
-    data = []
-    for i in range(1, n + 1):
-        data.append(
-            (''.join(random.choices(letters, k=3)),
-             fake.random_int(min=100, max=999),
-             fake.random_int(min=1, max=89)))
+def generator(n):
+    fake = Faker('ru_RU')
+    data = [('Ожидает доставки',) for _ in range(n)]
     return data
-
 
 try:
     connection = psycopg2.connect(
@@ -27,8 +20,10 @@ try:
     connection.autocommit = True
 
     with connection.cursor() as cursor:
-        data = generate(50)
-        cursor.executemany("INSERT INTO ГОС_НОМЕРА(СЕРИЯ, НОМЕР, РЕГИОН) VALUES(%s, %s, %s)", data)
+
+        data = generator(1_000_000)
+        print(data)
+        cursor.executemany("INSERT INTO ПЕРЕВОЗИМОЕ(СТАТУС) VALUES(%s)", data)
         print('Данные добавлены')
 
 
